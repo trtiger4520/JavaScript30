@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript" src="http://www.cornify.com/js/cornify.js"></script>
+</head>
+<body>
+<script>
+  let keyWord = 'lf2.net';
+  let printList = [];
+  function checkKeyWord(e) {
+    printList.push(e.key);
+    printList.splice(-keyWord.length - 1, printList.length - keyWord.length);
+    console.log(printList);
+    if(printList.join('').includes(keyWord)) {
+      console.log('YOOOOOOOOOOOO');
+      cornify_add();
+    }
+  }
+  window.addEventListener('keydown', checkKeyWord);
+
+</script>
+</body>
+</html>

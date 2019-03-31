@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Javascript 30</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="style/normalize.css">
+    <link rel="stylesheet" href="style/prism.css">
+    <link rel="stylesheet" href="style/style.css">
+
+</head>
+
+<body class="show-nav">
+    <header class="banner">
+        <h1 class="banner-text">Javascript 30</h1>
+    </header>
+    <main class="container">
+        <section>
+            <h1><span class="day">day 01</span>JavaScript Drum Kit</h1>
+            <p>
+                在頁面上抓取所有按鈕後設定各自的偵聽事件，透過KeyDown 與 KeyUp 觸發。 <br />
+                每個按鈕與預存的聲音標籤上都使用data儲存Key值，比對觸發的keyBord按鈕撥放相應的聲音檔。
+            </p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+let keyBtns = document.querySelectorAll('.key');
+function KeyBordtoPlay(even) {
+    //let keytarget = [...keyBtns].find(el => el.dataset.key === even.keyCode.toString());
+    let audio = document.querySelector(`audio[data-key="${even.keyCode}"]`);
+    let keytarget = document.querySelector(`.key[data-key="${even.keyCode}"]`);
+    if (!keytarget) return; // 找不到目標按鍵則停止
+    if (!audio) return; // 找不到目標音樂則停止
+    if (even.type === 'keydown') {
+    keytarget.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+    } else {
+    keytarget.classList.remove('playing');
+    console.log('remove');
+    }
+}
+// 使用window 設定 listener 容易卡bug
+document.addEventListener('keydown', KeyBordtoPlay);
+document.addEventListener('keyup', KeyBordtoPlay);
+// Stream Course
+// Bug (當按住按鍵時 容易發生無法移除class)
+// function removeBenClass(e) {
+//   if (e.propertyName !== 'transform') return;
+//   this.classList.remove('playing');
+// }
+// keyBtns.forEach( el => el.addEventListener('transitionend', removeBenClass));
+                    </code></pre>
+                </div>
+
+                <div class="code-reveal-print">
+                    <pre class="code-reveal-pre"><code class="language-html">
+&lt;div class=&quot;keys&quot;&gt;
+&lt;div data-key=&quot;65&quot; class=&quot;key&quot;&gt;
+    &lt;kbd&gt;A&lt;/kbd&gt;
+    &lt;span class=&quot;sound&quot;&gt;clap&lt;/span&gt;
+&lt;/div&gt;
+&lt;div data-key=&quot;83&quot; class=&quot;key&quot;&gt;
+    &lt;kbd&gt;S&lt;/kbd&gt;
+    &lt;span class=&quot;sound&quot;&gt;hihat&lt;/span&gt;
+&lt;/div&gt;
+&lt;div data-key=&quot;68&quot; class=&quot;key&quot;&gt;
+    &lt;kbd&gt;D&lt;/kbd&gt;
+    &lt;span class=&quot;sound&quot;&gt;kick&lt;/span&gt;
+&lt;/div&gt;
+&lt;div data-key=&quot;70&quot; class=&quot;key&quot;&gt;
+    &lt;kbd&gt;F&lt;/kbd&gt;
+    &lt;span class=&quot;sound&quot;&gt;openhat&lt;/span&gt;
+&lt;/div&gt;
+&lt;div data-key=&quot;71&quot; class=&quot;key&quot;&gt;
+    &lt;kbd&gt;G&lt;/kbd&gt;
+    &lt;span class=&quot;sound&quot;&gt;boom&lt;/span&gt;
+&lt;/div&gt;
+&lt;div data-key=&quot;72&quot; class=&quot;key&quot;&gt;
+    &lt;kbd&gt;H&lt;/kbd&gt;
+    &lt;span class=&quot;sound&quot;&gt;ride&lt;/span&gt;
+&lt;/div&gt;
+&lt;div data-key=&quot;74&quot; class=&quot;key&quot;&gt;
+    &lt;kbd&gt;J&lt;/kbd&gt;
+    &lt;span class=&quot;sound&quot;&gt;snare&lt;/span&gt;
+&lt;/div&gt;
+&lt;div data-key=&quot;75&quot; class=&quot;key&quot;&gt;
+    &lt;kbd&gt;K&lt;/kbd&gt;
+    &lt;span class=&quot;sound&quot;&gt;tom&lt;/span&gt;
+&lt;/div&gt;
+&lt;div data-key=&quot;76&quot; class=&quot;key&quot;&gt;
+    &lt;kbd&gt;L&lt;/kbd&gt;
+    &lt;span class=&quot;sound&quot;&gt;tink&lt;/span&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;audio data-key=&quot;65&quot; src=&quot;sounds/clap.wav&quot;&gt;&lt;/audio&gt;
+&lt;audio data-key=&quot;83&quot; src=&quot;sounds/hihat.wav&quot;&gt;&lt;/audio&gt;
+&lt;audio data-key=&quot;68&quot; src=&quot;sounds/kick.wav&quot;&gt;&lt;/audio&gt;
+&lt;audio data-key=&quot;70&quot; src=&quot;sounds/openhat.wav&quot;&gt;&lt;/audio&gt;
+&lt;audio data-key=&quot;71&quot; src=&quot;sounds/boom.wav&quot;&gt;&lt;/audio&gt;
+&lt;audio data-key=&quot;72&quot; src=&quot;sounds/ride.wav&quot;&gt;&lt;/audio&gt;
+&lt;audio data-key=&quot;74&quot; src=&quot;sounds/snare.wav&quot;&gt;&lt;/audio&gt;
+&lt;audio data-key=&quot;75&quot; src=&quot;sounds/tom.wav&quot;&gt;&lt;/audio&gt;
+&lt;audio data-key=&quot;76&quot; src=&quot;sounds/tink.wav&quot;&gt;&lt;/audio&gt;
+                    </code></pre>
+                </div>
+
+                <div class="code-reveal-print">
+                    <pre class="code-reveal-pre"><code class="language-css">
+html {
+  font-size: 10px;
+  background: url(http://i.imgur.com/b9r5sEL.jpg) bottom center;
+  background-size: cover;
+}
+
+body,html {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.keys {
+  display: flex;
+  flex: 1;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.key {
+  border: .4rem solid black;
+  border-radius: .5rem;
+  margin: 1rem;
+  font-size: 1.5rem;
+  padding: 1rem .5rem;
+  transition: all .07s ease;
+  width: 10rem;
+  text-align: center;
+  color: white;
+  background: rgba(0,0,0,0.4);
+  text-shadow: 0 0 .5rem black;
+}
+
+.playing {
+  transform: scale(1.1);
+  border-color: #ffc600;
+  box-shadow: 0 0 1rem #ffc600;
+}
+
+kbd {
+  display: block;
+  font-size: 4rem;
+}
+
+.sound {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: .1rem;
+  color: #ffc600;
+}
+                    </code></pre>
+                </div>
+            </article>
+        </section>
+        <section>
+            <h1><span class="day">day 02</span>JS and CSS Clock</h1>
+            <p>
+                透過javascript內建的Date取得時間，<br />
+                在頁面上抓取指針後設定各自的transform角度，<br />
+                在使用setInterval每隔一定時間更新畫面。
+            </p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+let handleSecend = document.querySelector('.second-hand');
+let handleMinutes = document.querySelector('.min-hand');
+let handleHour = document.querySelector('.hour-hand');
+function setClock () {
+  let now = new Date;
+  let seconds = now.getSeconds();
+  let minutes = now.getMinutes();
+  let hour = now.getHours();
+  let secDeg = ((seconds / 60) * 360) + 90;
+  let minDeg = ((minutes / 60) * 360) + 90;
+  let hourDeg = ((hour / 12) * 360) + 90;
+  //handleSecend.style.transform = `rotate(${secDeg}deg)`;
+  setRotate(handleSecend, secDeg);
+  setRotate(handleMinutes, minDeg);
+  setRotate(handleHour, hourDeg);
+}
+function setRotate(el, deg) {
+  el.style.transform = `rotate(${deg}deg)`;
+}
+setInterval(setClock, 1000);
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+&lt;div class=&quot;clock&quot;&gt;
+  &lt;div class=&quot;clock-face&quot;&gt;
+    &lt;div class=&quot;hand hour-hand&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;hand min-hand&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;hand second-hand&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+                        </code></pre>
+                    </div>
+
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+html {
+  background: #018DED url(http://unsplash.it/1500/1000?image=881&blur=50);
+  background-size: cover;
+  font-family: 'helvetica neue';
+  text-align: center;
+  font-size: 10px;
+}
+body {
+  margin: 0;
+  font-size: 2rem;
+  display: flex;
+  flex: 1;
+  min-height: 100vh;
+  align-items: center;
+}
+.clock {
+  width: 30rem;
+  height: 30rem;
+  border: 20px solid white;
+  border-radius: 50%;
+  margin: 50px auto;
+  position: relative;
+  padding: 2rem;
+  box-shadow:
+    0 0 0 4px rgba(0,0,0,0.1),
+    inset 0 0 0 3px #EFEFEF,
+    inset 0 0 10px black,
+    0 0 10px rgba(0,0,0,0.2);
+}
+.clock-face {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: translateY(-3px); /* account for the height of the clock hands */
+}
+.hand {
+  width: 50%;
+  height: 6px;
+  background: black;
+  position: absolute;
+  top: 50%;
+  transform: rotate(0deg);
+  transform-origin: 100%;
+  transition: transform .05s cubic-bezier(0.87, 0.43, 0, 1.66);
+}
+
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+            <h1><span class="day">day 03</span>Scoped CSS Variables and JS</h1>
+            <p>
+              使用input裡的color與range類型來調整圖片的邊框、模糊、顏色，<br/>
+              有趣的是把相對應的屬性都存在input的html標籤上，使用javascript讀取時很方便！
+            </p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+let controls = document.querySelectorAll('input');
+let picture = document.querySelector('img');
+let h1 = document.querySelector('.h1');
+function setProps(){
+  let sizing = this.dataset.sizing || '';
+  document.documentElement.style.setProperty(`--${this.name}`, this.value + sizing)
+}
+controls.forEach(ctrl => ctrl.addEventListener('change', setProps));
+controls.forEach(ctrl => ctrl.addEventListener('mousemove', setProps));
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+&lt;h2&gt;Update CSS Variables with &lt;span class=&#39;hl&#39;&gt;JS&lt;/span&gt;&lt;/h2&gt;
+
+  &lt;div class=&quot;controls&quot;&gt;
+    &lt;label for=&quot;spacing&quot;&gt;Spacing:&lt;/label&gt;
+    &lt;input id=&quot;spacing&quot; type=&quot;range&quot; name=&quot;spacing&quot; min=&quot;10&quot; max=&quot;200&quot; value=&quot;10&quot; data-sizing=&quot;px&quot;&gt;
+
+    &lt;label for=&quot;blur&quot;&gt;Blur:&lt;/label&gt;
+    &lt;input id=&quot;blur&quot; type=&quot;range&quot; name=&quot;blur&quot; min=&quot;0&quot; max=&quot;25&quot; value=&quot;0&quot; data-sizing=&quot;px&quot;&gt;
+
+    &lt;label for=&quot;base&quot;&gt;Base Color&lt;/label&gt;
+    &lt;input id=&quot;base&quot; type=&quot;color&quot; name=&quot;base&quot; value=&quot;#ffffff&quot;&gt;
+  &lt;/div&gt;
+
+  &lt;img src=&quot;https://source.unsplash.com/7bwQXzbF6KE/800x500&quot;&gt;
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+:root {
+  --spacing: 10px;
+  --blur: 0px;
+  --base: #ffffff;
+}
+img {
+  padding: var(--spacing);
+  background-color: var(--base);
+  filter: blur(var(--blur));
+}
+.hl {
+  color: var(--base);
+}
+body {
+  text-align: center;
+  background: #193549;
+  color: white;
+  font-family: 'helvetica neue', sans-serif;
+  font-weight: 100;
+  font-size: 50px;
+}
+.controls {
+  margin-bottom: 50px;
+}
+input {
+  width: 100px;
+}
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 04</span>Array Cardio 💪</h1>
+            <p>
+              純js的陣列操作~ <br/>
+              有：<i>filter, map, sort, reduce</i> <br/>
+              篩選出需要的資料
+            </p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// Get your shorts on - this is an array workout!
+// ## Array Cardio Day 1
+
+// Some data we can work with
+
+const inventors = [
+  { first: 'Albert', last: 'Einstein', year: 1879, passed: 1955 },
+  { first: 'Isaac', last: 'Newton', year: 1643, passed: 1727 },
+  { first: 'Galileo', last: 'Galilei', year: 1564, passed: 1642 },
+  { first: 'Marie', last: 'Curie', year: 1867, passed: 1934 },
+  { first: 'Johannes', last: 'Kepler', year: 1571, passed: 1630 },
+  { first: 'Nicolaus', last: 'Copernicus', year: 1473, passed: 1543 },
+  { first: 'Max', last: 'Planck', year: 1858, passed: 1947 },
+  { first: 'Katherine', last: 'Blodgett', year: 1898, passed: 1979 },
+  { first: 'Ada', last: 'Lovelace', year: 1815, passed: 1852 },
+  { first: 'Sarah E.', last: 'Goode', year: 1855, passed: 1905 },
+  { first: 'Lise', last: 'Meitner', year: 1878, passed: 1968 },
+  { first: 'Hanna', last: 'Hammarström', year: 1829, passed: 1909 }
+];
+
+const people = ['Beck, Glenn', 'Becker, Carl', 'Beckett, Samuel', 'Beddoes, Mick', 'Beecher, Henry', 'Beethoven, Ludwig', 'Begin, Menachem', 'Belloc, Hilaire', 'Bellow, Saul', 'Benchley, Robert', 'Benenson, Peter', 'Ben-Gurion, David', 'Benjamin, Walter', 'Benn, Tony', 'Bennington, Chester', 'Benson, Leana', 'Bent, Silas', 'Bentsen, Lloyd', 'Berger, Ric', 'Bergman, Ingmar', 'Berio, Luciano', 'Berle, Milton', 'Berlin, Irving', 'Berne, Eric', 'Bernhard, Sandra', 'Berra, Yogi', 'Berry, Halle', 'Berry, Wendell', 'Bethea, Erin', 'Bevan, Aneurin', 'Bevel, Ken', 'Biden, Joseph', 'Bierce, Ambrose', 'Biko, Steve', 'Billings, Josh', 'Biondo, Frank', 'Birrell, Augustine', 'Black, Elk', 'Blair, Robert', 'Blair, Tony', 'Blake, William'];
+
+// Array.prototype.filter()
+// 1. Filter the list of inventors for those who were born in the 1500's
+
+let fifteen = inventors.filter(inventor => inventor.year >= 1500 && inventor.year <= 1599);
+console.table(fifteen);
+
+// Array.prototype.map()
+// 2. Give us an array of the inventors' first and last names
+
+let fullNames = inventors.map(inventor => inventor.first + ' ' + inventor.last);
+console.log(fullNames);
+
+// Array.prototype.sort()
+// 3. Sort the inventors by birthdate, oldest to youngest
+
+//let ordered = inventors.sort((before, inventor) => before.year > inventor.year ? 1 : -1);
+let ordered = inventors.sort((before, inventor) => before.year - inventor.year);
+console.table(ordered);
+
+// Array.prototype.reduce()
+// 4. How many years did all the inventors live?
+
+let allyear = inventors.reduce((prev, current) => prev + (current.passed - current.year), 0)
+console.log(allyear);
+
+// 5. Sort the inventors by years lived
+
+//let oldest = inventors.sort((a, b) => (a.passed - a.year) > (b.passed - b.year) ? 1 : -1);
+let oldest = inventors.sort((before, inventor) => (before.passed - before.year) - (inventor.passed - inventor.year))
+console.table(oldest);
+
+// 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
+// https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+
+// let mw_category = document.querySelector('.mw-category');
+// let links = mw_category.querySelectorAll('a');
+// let de = [...links]
+//          .map(link => link.textContent)
+//          .filter(name => name.includes('de'));
+
+// 7. sort Exercise
+// Sort the people alphabetically by last name
+
+let alpha = people.sort((a, b) => {
+  let [aLast,] = a.split(', ');
+  let [bLast,] = b.split(', ');
+  return aLast > bLast ? 1 : -1;
+});
+console.log(alpha);
+
+// 8. Reduce Exercise
+// Sum up the instances of each of these
+const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+// --bad idea--
+//let singleData = [...new Set(data)];
+// let sumUp = {};
+// singleData.forEach(name => sumUp[name] = data.find(i => i === name).length);
+
+let sumUp = data.reduce((obj, item) => {
+  if (!obj[item]) 
+    obj[item] = 0;
+  obj[item]++;
+  return obj;
+},{})
+console.log(sumUp);
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+<p><em>Psst: have a look at the JavaScript Console</em> 💁</p>
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 05</span>Flex Panels 💪</h1>
+            <p>
+              使用Flex建立的分割圖像面板。<br/>
+              使用javascript在上面建立滑鼠事件，當進入/離開目標時觸發放大收縮。<br/>
+              文字進入動畫的部分會在放大時候才觸發。
+            </p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+let panels = [...document.querySelectorAll('.panel')];
+
+ // only one to use
+ function resetPanel(target) {
+   panels.forEach(i => {
+     if (!target || i === target) return;
+
+     let cl = i.classList;
+     if (cl.contains('open'))
+       cl.remove('open');
+     if (cl.contains('open-active'))
+       cl.remove('open-active');
+   })
+ }
+ function showPanelText(e) {
+   if (e.propertyName !== 'flex-grow') return;
+
+   // only one
+   if (!this.classList.contains('open')) return;
+   this.classList.add('open-active');
+   
+   // if (this.classList.contains('open')) {
+   //   this.classList.add('open-active');
+   // }else {
+   //   this.classList.remove('open-active');
+   // };
+ }
+ function clickPanel(e) {
+   // only one
+   resetPanel(this);
+   this.classList.add('open');
+
+
+   //this.classList.toggle('open');
+ }
+ panels.forEach(i => i.addEventListener('mousemove', clickPanel));
+ panels.forEach(i => i.addEventListener('mouseleave', resetPanel));
+ panels.forEach(i => i.addEventListener('transitionend', showPanelText));
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+&lt;div class=&quot;panels&quot;&gt;
+  &lt;div class=&quot;panel panel1&quot;&gt;
+    &lt;p&gt;Hey&lt;/p&gt;
+    &lt;p&gt;Let&#39;s&lt;/p&gt;
+    &lt;p&gt;Dance&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel panel2&quot;&gt;
+    &lt;p&gt;Give&lt;/p&gt;
+    &lt;p&gt;Take&lt;/p&gt;
+    &lt;p&gt;Receive&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel panel3&quot;&gt;
+    &lt;p&gt;Experience&lt;/p&gt;
+    &lt;p&gt;It&lt;/p&gt;
+    &lt;p&gt;Today&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel panel4&quot;&gt;
+    &lt;p&gt;Give&lt;/p&gt;
+    &lt;p&gt;All&lt;/p&gt;
+    &lt;p&gt;You can&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel panel5&quot;&gt;
+    &lt;p&gt;Life&lt;/p&gt;
+    &lt;p&gt;In&lt;/p&gt;
+    &lt;p&gt;Motion&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+html {
+  box-sizing: border-box;
+  background: #ffc600;
+  font-family: 'helvetica neue';
+  font-size: 20px;
+  font-weight: 200;
+}
+
+body {
+  margin: 0;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+.panels {
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+}
+.panel {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background: #6B0F9C;
+  box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
+  color: white;
+  text-align: center;
+  align-items: center;
+  /* Safari transitionend event.propertyName === flex */
+  /* Chrome + FF transitionend event.propertyName === flex-grow */
+  transition:
+    font-size 0.5s cubic-bezier(0.55,-0.06, 0.58, 0.54),
+    flex 0.5s cubic-bezier(0.55,-0.06, 0.58, 0.54),
+    background 0.2s;
+  font-size: 20px;
+  background-size: cover;
+  background-position: center;
+}
+.panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
+.panel2 { background-image:url(https://source.unsplash.com/rFKUFzjPYiQ/1500x1500); }
+.panel3 { background-image:url(https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&w=1500&h=1500&fit=crop&s=967e8a713a4e395260793fc8c802901d); }
+.panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
+.panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
+
+/* Flex Children */
+.panel > * {
+  margin: 0;
+  width: 100%;
+  transition: transform 0.5s;
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.panel > *:first-child {transform: translateY(-100%);}
+.panel > *:last-child {transform: translateY(100%);}
+.panel.open-active > *:first-child {transform: translateY(0%);}
+.panel.open-active > *:last-child {transform: translateY(0%);}
+.panel p {
+  text-transform: uppercase;
+  font-family: 'Amatic SC', cursive;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.72), 0 0 14px rgba(0, 0, 0, 0.45);
+  font-size: 2em;
+}
+
+.panel p:nth-child(2) {
+  font-size: 4em;
+}
+
+.panel.open {
+  flex: 5;
+  font-size: 40px;
+}
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 06</span>Type Ahead 👀</h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+let cities = [];
+let listUL = document.querySelector('.suggestions');
+let search = document.querySelector('input.search');
+
+fetch(endpoint).then(function(res){
+  return res.json()
+}).then(function(jsondata) {
+  cities.push(...jsondata);
+});
+
+function findMatches(word, cities) {
+  return cities.filter(place => {
+    let regex = new RegExp(word, 'gi');
+    return place.city.match(regex) || place.state.match(regex);
+  });
+}
+
+function updateMatch(e) {
+  let value = this.value.trim();
+  let filterCityData = findMatches(value, cities);
+  let appendHeml = filterCityData.map(citydata => {
+    let regex = new RegExp(value, 'gi');
+    let cityNameMark = value ? 
+      citydata.city.replace(regex, `<span class="hl">${ value }</span>`) : 
+      citydata.city;
+    let stateNameMark = value ? 
+      citydata.state.replace(regex, `<span class="hl">${ value }</span>`) : 
+      citydata.state;
+    return `<li>
+        <span class="name">${ cityNameMark }, ${ stateNameMark }</span>
+        <span class="population">${ citydata.population }</span>
+      </li>`;
+  }).join('');
+  listUL.innerHTML = appendHeml;
+}
+
+//search.addEventListener('change', updateMatch);
+search.addEventListener('keyup', updateMatch);
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+&lt;form class=&quot;search-form&quot;&gt;
+  &lt;input type=&quot;text&quot; class=&quot;search&quot; placeholder=&quot;City or State&quot;&gt;
+  &lt;ul class=&quot;suggestions&quot;&gt;
+    &lt;li&gt;Filter for a city&lt;/li&gt;
+    &lt;li&gt;or a state&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/form&gt;
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+html {
+  box-sizing: border-box;
+  background: #ffc600;
+  font-family: 'helvetica neue';
+  font-size: 20px;
+  font-weight: 200;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+input {
+  width: 100%;
+  padding: 20px;
+}
+
+.search-form {
+  max-width: 400px;
+  margin: 50px auto;
+}
+
+input.search {
+  margin: 0;
+  text-align: center;
+  outline: 0;
+  border: 10px solid #F7F7F7;
+  width: 120%;
+  left: -10%;
+  position: relative;
+  top: 10px;
+  z-index: 2;
+  border-radius: 5px;
+  font-size: 40px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.19);
+}
+
+.suggestions {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  /*perspective: 20px;*/
+}
+
+.suggestions li {
+  background: white;
+  list-style: none;
+  border-bottom: 1px solid #D8D8D8;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.14);
+  margin: 0;
+  padding: 20px;
+  transition: background 0.2s;
+  display: flex;
+  justify-content: space-between;
+  text-transform: capitalize;
+}
+
+.suggestions li:nth-child(even) {
+  transform: perspective(100px) rotateX(3deg) translateY(2px) scale(1.001);
+  background: linear-gradient(to bottom,  #ffffff 0%,#EFEFEF 100%);
+}
+
+.suggestions li:nth-child(odd) {
+  transform: perspective(100px) rotateX(-3deg) translateY(3px);
+  background: linear-gradient(to top,  #ffffff 0%,#EFEFEF 100%);
+}
+
+span.population {
+  font-size: 15px;
+}
+
+.hl {
+  background: #ffc600;
+}
+
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 07</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 08</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 09</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 10</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 11</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 12</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 13</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 14</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 15</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 16</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 17</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 18</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 19</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 20</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 21</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 22</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 23</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 24</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 25</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 26</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 27</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 28</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 29</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <section>
+          <h1><span class="day">day 30</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </section>
+        
+        <!-- template -->
+        <template class="section-template">
+            <h1><span class="day">day 00</span></h1>
+            <p></p>
+            <article class="code-reveal">
+                <h1>代碼內容</h1>
+                <nav class="code-reveal-nav">
+                    <ul>
+                        <li class="code-reveal-btn active"><a href="#">JAVASCRIPT</a></li>
+                        <li class="code-reveal-btn"><a href="#">HTML</a></li>
+                        <li class="code-reveal-btn"><a href="#">CSS</a></li>
+                    </ul>
+                </nav>
+                <div class="code-reveal-prints">
+                    <div class="code-reveal-print active">
+                        <pre class="code-reveal-pre"><code class="language-javascript">
+// JavaScript
+console.log('hello-world');
+                         </code></pre>
+                    </div>
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-html">
+html
+                        </code></pre>
+                    </div>
+    
+                    <div class="code-reveal-print">
+                        <pre class="code-reveal-pre"><code class="language-css">
+css
+                        </code></pre>
+                    </div>
+                </div>
+            </article>
+        </template>
+
+        <nav class="main-navbar">
+            <ul>
+                <li class="active"><a href="#"><span class="day">day 01</span>JavaScript Drum Kit</a></li>
+                <li><a href="#">連結</a></li>
+            </ul>
+        </nav>
+    </main>
+    
+    <footer class="footer">
+        JavaScript 30 : <a href="https://javascript30.com/">https://javascript30.com/</a> by <a href="https://wesbos.com/">Wes Bos</a>
+    </footer>
+    <script src="script/prism.js"></script>
+    <script src="script/script.js" type="module"></script>
+    <script>
+        // const App = CodeReverl({
+        //     selector: '.code-reveal'
+        // });
+    </script>
+</body>
+
+</html>

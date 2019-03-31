@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Shadow</title>
+</head>
+<body>
+
+  <div class="hero">
+    <h1 contenteditable>🔥WOAH!</h1>
+  </div>
+
+  <style>
+  html {
+    color: black;
+    font-family: sans-serif;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+  }
+
+  h1 {
+    text-shadow: 10px 10px 0 rgba(0,0,0,1);
+    font-size: 100px;
+  }
+  </style>
+
+<script>
+  const hero = document.querySelector('.hero');
+  let text = hero.querySelector('h1');
+  let floating = 200;
+
+  function MoveEven(e){
+    const { offsetWidth: width, offsetHeight: height} = this;
+    let { offsetX: x, offsetY: y} = e;
+
+    if (e.target !== this) {
+      x = x + e.target.offsetLeft;
+      y = y + e.target.offsetTop;
+    }
+
+    let xFloating = Math.round((x / width * floating) - (floating / 2));
+    let yFloating = Math.round((y / height * floating) - (floating / 2));
+    console.log(xFloating, yFloating);
+
+    text.style.textShadow = `
+      ${ xFloating }px ${ yFloating }px 0 rgba(255, 0, 255, .16),
+      0px ${ yFloating }px 0 rgba(0, 0, 255, .16),
+      ${ xFloating }px 0px 0 rgba(255, 0, 0, .16)
+    `;
+
+
+  }
+
+  hero.addEventListener('mousemove', MoveEven);
+
+</script>
+</body>
+</html>

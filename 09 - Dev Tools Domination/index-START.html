@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Console Tricks!</title>
+</head>
+<body>
+
+  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+
+  <script>
+    const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
+
+    function makeGreen() {
+      const p = document.querySelector('p');
+      p.style.color = '#BADA55';
+      p.style.fontSize = '50px';
+    }
+
+    // Regular
+    console.log('hello');
+
+    // Interpolated
+    console.log('i am %s string', 'YOOOOOO');
+
+    // Styled
+    console.log('%c some text ', 'font-size: 20px; background: rgb(10, 200, 255);')
+
+    // warning!
+    console.warn('OH NOOOOOOOOOO')
+
+    // Error :|
+    console.error('YOOOOOOOOO what the !')
+
+    // Info
+    console.info('在非洲，每六十秒，就有一分鐘過去');
+
+    // Testing
+    let p = document.querySelector('p');
+    console.assert( p.classList.contains('nothing'), 'that is wrong');
+
+    // clearing
+    //console.clear()
+
+    // Viewing DOM Elements
+    console.log(p);
+    console.dir(p);
+    
+    // Grouping together
+    dogs.forEach(dog => {
+      console.groupCollapsed('dog ' + dog.name);
+      console.log(dog.name);
+      console.log(dog.age);
+      console.log(dog.age * 7);
+      console.groupEnd('dog ' + dog.name);
+    })
+
+    // counting
+    console.count('sssss');
+    console.count('aaa');
+    console.count('sssss');
+    console.count('sssss');
+    console.count('aaa');
+    console.count('sssss');
+
+    // timing
+    console.time('fetch')
+  </script>
+</body>
+</html>
